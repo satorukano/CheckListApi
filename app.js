@@ -6,6 +6,8 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
+const port = process.env.PORT || 8080
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -114,6 +116,6 @@ app.delete("/delete", (req, res) => {
 
 
 
-app.listen(8080, () => {
+app.listen(port, () => {
   console.log(`Example app listening on port 8080`)
 })
