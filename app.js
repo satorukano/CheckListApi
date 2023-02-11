@@ -89,7 +89,20 @@ app.post('/add', (req, res) => {
         res.send("error")
       } else {
         const result_id = results[0].insertId
-        res.send({id: result_id})
+        res.send({ id: result_id })
+      }
+    })
+})
+
+app.delete("/delete", (req, res) => {
+  const user_id = req.body.user_id
+  connection.query('DELETE FROM name WHERE id = ?; DELETE FROM crew WHERE id = ?; DELETE FROM skipper WHERE id = ?',
+    [user_id, user_id, user_id], (error, results) => {
+      if (error) {
+        console.log(error)
+        res.send("error")
+      } else {
+        res.send({ result: results })
       }
     })
 })
