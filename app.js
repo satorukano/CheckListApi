@@ -19,18 +19,42 @@ app.use((req, res, next) => {
 });
 
 
-
-
-const connection = mysql.createConnection({
+const db_config = {
   host: process.env.HOST,
   port: "3306",
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
   multipleStatements: true
-})
+}
 
-connection.connect()
+let connection
+
+function handleDisconnect() {
+  console.log('INFO.CONNECTION_DB: ');
+  connection = mysql.createConnection(db_config);
+
+  //connection取得
+  connection.connect(function (err) {
+    if (err) {
+      console.log('ERROR.CONNECTION_DB: ', err);
+      setTimeout(handleDisconnect, 1000);
+    }
+  });
+
+  //error('PROTOCOL_CONNECTION_LOST')時に再接続
+  connection.on('error', function (err) {
+    console.log('ERROR.DB: ', err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      console.log('ERROR.CONNECTION_LOST: ', err);
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
 
 const list_dic = {
   crew: checklist.crew,
