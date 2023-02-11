@@ -20,11 +20,11 @@ app.use((req, res, next) => {
 
 
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: process.env.HOST,
   port: "3306",
-  user: 'root',
+  user: process.env.USER,
   password: process.env.PASSWORD,
-  database: 'check_list',
+  database: process.env.DATABASE,
   multipleStatements: true
 })
 
@@ -57,6 +57,10 @@ app.post('/', (req, res) => {
   })
 })
 
+
+app.get('/OK', (req, res) => {
+  res.send("OK")
+})
 
 app.get('/member', (req, res) => {
   connection.query('SELECT * FROM name', (error, results) => {
