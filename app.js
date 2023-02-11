@@ -58,7 +58,7 @@ app.post('/', (req, res) => {
 })
 
 
-app.get('/OK', (req, res) => {
+app.get('/', (req, res) => {
   res.send("OK")
 })
 
